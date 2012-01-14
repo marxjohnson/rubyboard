@@ -1,3 +1,11 @@
+
+# Define event constants
+EVENT_LOCK = 32
+EVENT_ERASE = 4
+EVENT_WAKE = 2
+EVENT_DETECT = 32
+EVENT_CONTACT = 1
+
 begin
 	lsusb = `lsusb`
 	if lsusb.split("\n").select{|l| l.include? "2047:ffe7"}.count == 0
@@ -36,38 +44,33 @@ begin
 			if current[10] != previous[10]
 				state = current[10]
 				pstate = previous[10]
-				lock = 32
-				erase = 4
-				wake = 2
-				if (pstate == pstate | lock) && (state != state | lock)
+				if (pstate == pstate | EVENT_LOCK) && (state != state | EVENT_LOCK)
 					puts "Board unlocked"
-				elsif (pstate != pstate | lock) && (state == state | lock)
+				elsif (pstate != pstate | EVENT_LOCK) && (state == state | EVENT_LOCK)
 					puts "Board locked"
 				end
-				if (pstate == pstate | erase) && (state != state | erase)
+				if (pstate == pstate | EVENT_ERASE) && (state != state | EVENT_ERASE)
 					puts "Erase released"
-				elsif (pstate != pstate | erase) && (state == state | erase)
+				elsif (pstate != pstate | EVENT_ERASE) && (state == state | EVENT_ERASE)
 					puts "Erase Pressed"
 				end
-				if (pstate == pstate | wake) && (state != state | wake)
+				if (pstate == pstate | EVENT_WAKE) && (state != state | EVENT_WAKE)
 					puts "Wake released"
-				elsif (pstate != pstate | wake) && (state == state | wake)
+				elsif (pstate != pstate | EVENT_WAKE) && (state == state | EVENT_WAKE)
 					puts "Wake Pressed"
 				end
 			end
 			if current[3] != previous[3]
 				state = current[3]
 				pstate = previous[3]
-				detected = 32
-				contact = 1
-				if (pstate == pstate | detected) && (state != state | detected)
+				if (pstate == pstate | EVENT_DETECT) && (state != state | EVENT_DETECT)
 					puts "Pen Lost"
-				elsif (pstate != pstate | detected) && (state == state | detected)
+				elsif (pstate != pstate | EVENT_DETECT) && (state == state | EVENT_DETECT)
 					puts "Pen Detected"
 				end
-				if (pstate == pstate | contact) && (state != state | contact)
+				if (pstate == pstate | EVENT_CONTACT) && (state != state | EVENT_CONTACT)
 					puts "Pen contact lost"
-				elsif (pstate != pstate | contact) && (state == state | contact)
+				elsif (pstate != pstate | EVENT_CONTACT) && (state == state | EVENT_CONTACT)
 					puts "Pen contact detected"
 				end
 			end
