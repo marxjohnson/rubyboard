@@ -47,7 +47,7 @@ begin
 			current = events.shift
 			next if current.nil?
 
-			# Byte 11 Tells us the state of the buttons
+			# Byte 10 Tells us the state of the buttons
 			if current[10] != previous[10]
 				state = current[10]
 				pstate = previous[10]
@@ -67,7 +67,7 @@ begin
 					puts "Wake Pressed"
 				end
 			end
-			# Byte 4 tells us if the pen is in range, and whether it's touching the screen
+			# Byte 3 tells us if the pen is in range, and whether it's touching the screen
 			if current[3] != previous[3]
 				state = current[3]
 				pstate = previous[3]
